@@ -17,9 +17,9 @@ to dos :
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
-#include "utils.h"
-#include "ghosts.h"
-#include "pacman.h"
+#include "utils.c"
+#include "ghosts.c"
+#include "pacman.c"
 
 #define MAX_GHOSTS 100 //maximum capacity of the ghosts array
 

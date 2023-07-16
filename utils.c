@@ -1,8 +1,45 @@
-#include "utils.h"
+#ifndef UTILS_C_INCLUDED
+#define UTILS_C_INCLUDED
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <windows.h>
+
+//directions
+#define VERTICAL 0b0001
+#define HORIZONTAL 0b0010
+#define LEFT 0b0100
+#define UP 0b1000
+
+//Key Char Codes = KCC
+#define AKCCM -32 //Arrow Key Char Code Modifier
+#define LAKCC 75 //Left Arrow Key Char Code
+#define RAKCC 77 //Right Arrow Key Char Code
+#define UAKCC 72 //Up Arrow Key Char Code
+#define DAKCC 80 //Down Arrow Key Char Code
+#define SKCC 32 //Enter Key Char Code
+
+//something
+#define SHOULD_NOT_REACH_HERE -1
+
+#define PERCENT_CHAR 37 //percent character
+
+//point = location; x = row, y = column
+typedef struct {
+	
+	int x, y;
+	
+} Location;
+
+//clockwise order
+static int directions[8] = {VERTICAL | UP, //up
+                            HORIZONTAL | VERTICAL | UP | !LEFT, //up right
+                            HORIZONTAL | !LEFT, //right
+                            HORIZONTAL | VERTICAL | !UP | !LEFT, //down right
+                            VERTICAL | !UP, //down
+                            HORIZONTAL | VERTICAL | !UP | LEFT, //down left
+                            HORIZONTAL | LEFT, //left
+                            HORIZONTAL | VERTICAL | UP | LEFT}; //up left
 
 int randFlag() {
 
@@ -433,4 +470,4 @@ int turnDirection(int direction, int clockwise, int steps) {
 
 }
 
-
+#endif // UTILS_C_INCLUDED

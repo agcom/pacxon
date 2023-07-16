@@ -1,7 +1,7 @@
-#ifndef PACMAN_H_INCLUDED
-#define PACMAN_H_INCLUDED
+#ifndef PACMAN_C_INCLUDED
+#define PACMAN_C_INCLUDED
 
-#include "utils.h"
+#include "utils.c"
 
 #define PAC_MAN_CHAR 'O'
 #define PAC_MAN_TRACE_CHAR 176
@@ -14,4 +14,4 @@ typedef struct {
 
 } PacMan;
 
-#endif // PACMAN_H_INCLUDED
+#endif // PACMAN_C_INCLUDED

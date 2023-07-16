@@ -207,7 +207,7 @@ void update_picture() {
 					ghosts[i].type == FLOAT_GHOST ? FLOAT_GHOST_CHAR :
 					ghosts[i].type == RAIL_GHOST ? RAIL_GHOST_CHAR :
 					ghosts[i].type == BRICK_ZONE_GHOST ? BRICK_ZONE_GHOST_CHAR :
-					SHOULD_NOT_REACH_HERE
+					""
 			);
 		}
 	}

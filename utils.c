@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "getch.c"
 #include "kbhit.c"
 
 //directions
@@ -240,7 +239,7 @@ int randDirection(int diagonal) {
 
 void purgePressedKeys() {
 	
-	while (_kbhit()) _getch();
+	while (_kbhit()) getch();
 	
 }
 

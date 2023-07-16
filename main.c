@@ -21,7 +21,6 @@ to dos :
 #include "ghosts.c"
 #include "pacman.c"
 #include "kbhit.c"
-#include "getch.c"
 
 #define MAX_GHOSTS 100 //maximum capacity of the ghosts array
 
@@ -1009,7 +1008,7 @@ int main() {
 		
 		if (_kbhit()) {
 			
-			int c = _getch();
+			int c = getch();
 			
 			switch (c) { //key press handler
 				

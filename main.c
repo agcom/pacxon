@@ -280,7 +280,7 @@ void updatePicture() {
 
 void drawHeader() {
 	
-	printf("Lives: %d\tScore: %d\tProgress: %d/%d%c\n", pm.lives, score, progress, WIN_PROGRESS, PERCENT_CHAR);
+	printf("Lives: %d\tScore: %d\tProgress: %d/%d%c\r\n", pm.lives, score, progress, WIN_PROGRESS, PERCENT_CHAR);
 	
 }
 
@@ -952,7 +952,7 @@ void controlAutoMoves() {
 
 }
 
-int arrowToDirection(char a) {
+int arrowToDirection(int a) {
 
     switch(a) {
 
@@ -968,6 +968,13 @@ int arrowToDirection(char a) {
 }
 
 int main(){
+	initscr();
+	
+	noecho();
+	nl();
+	keypad(stdscr, TRUE);
+	cbreak();
+	nodelay(stdscr, TRUE);
 
 	srand(time(NULL)); //for absolute random
     cls();
@@ -980,13 +987,16 @@ int main(){
 
         if(_kbhit()) {
 
-            char c = _getch();
+            int c = _getch();
 
             switch(c) { //key press handler
 
-                case AKCCM : { //arrow key
+				case LAKCC:
+				case RAKCC:
+				case UAKCC:
+				case DAKCC : { //arrow key
 
-                    movePacMan(arrowToDirection(_getch()), 0);
+                    movePacMan(arrowToDirection(c), 0);
 
                     break;
                 }
@@ -1010,6 +1020,8 @@ int main(){
         drawGame();
         Sleep(1000/REFRESH_RATE);
     }
+	
+	endwin();
 
     return 0;
 

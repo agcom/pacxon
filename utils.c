@@ -13,12 +13,11 @@
 #define UP 0b1000
 
 //Key Char Codes = KCC
-#define AKCCM -32 //Arrow Key Char Code Modifier
-#define LAKCC 75 //Left Arrow Key Char Code
-#define RAKCC 77 //Right Arrow Key Char Code
-#define UAKCC 72 //Up Arrow Key Char Code
-#define DAKCC 80 //Down Arrow Key Char Code
-#define SKCC 32 //Enter Key Char Code
+#define LAKCC KEY_LEFT //Left Arrow Key Char Code
+#define RAKCC KEY_RIGHT //Right Arrow Key Char Code
+#define UAKCC KEY_UP //Up Arrow Key Char Code
+#define DAKCC KEY_DOWN //Down Arrow Key Char Code
+#define SKCC '\n' //Enter Key Char Code
 
 //something
 #define SHOULD_NOT_REACH_HERE -1
@@ -67,7 +66,7 @@ void print2DStrArray(int rows, int columns, char* c[rows][columns]) {
 
         }
 
-        printf("\n");
+        printf("\r\n");
 
     }
 

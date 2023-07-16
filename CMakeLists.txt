@@ -3,7 +3,6 @@ project(PacXon C)
 
 set(CMAKE_C_STANDARD 11)
 
-set(CURSES_USE_NCURSES TRUE)
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})
 

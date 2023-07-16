@@ -4,9 +4,12 @@
 #include <curses.h>
 
 int _kbhit() {
-	const char c = getch();
-	ungetch(c);
-	return c != ERR;
+	const int c = getch();
+	if (c != ERR) {
+		ungetch(c);
+		return 1;
+	} else
+		return 0;
 }
 
 #endif // KBHIT_C_INCLUDED

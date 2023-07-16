@@ -9,9 +9,9 @@
 #define BRICK_ZONE_GHOST 2
 
 //shapes
-#define FLOAT_GHOST_CHAR 224
-#define RAIL_GHOST_CHAR 225
-#define BRICK_ZONE_GHOST_CHAR 235
+#define FLOAT_GHOST_CHAR "α"
+#define RAIL_GHOST_CHAR "ß"
+#define BRICK_ZONE_GHOST_CHAR "δ"
 
 #define A_GHOST_MAX_LOCATIONS 10
 

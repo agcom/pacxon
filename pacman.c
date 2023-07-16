@@ -3,8 +3,8 @@
 
 #include "utils.c"
 
-#define PAC_MAN_CHAR 'O'
-#define PAC_MAN_TRACE_CHAR 176
+#define PAC_MAN_CHAR "O"
+#define PAC_MAN_TRACE_CHAR "░"
 
 typedef struct {
 

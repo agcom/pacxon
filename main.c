@@ -28,7 +28,7 @@ to dos :
 #define REFRESH_RATE 120 //Hz; affects velocity of things in game (pac man, ghosts)
 
 //shapes
-#define BRICK_CHAR 178
+#define BRICK_CHAR "▓"
 
 //the whole game boar dimensions
 #define ROWS 30
@@ -45,7 +45,7 @@ Ghost ghosts[MAX_GHOSTS]; //ghosts pool
 int bricks[ROWS][COLUMNS]; //-1 for bricks, >= 0 for zones
 int view_validation = 0; //the drawn picture is the current state or not, if not redraw it
 PacMan pm; //the hero
-char picture[ROWS][COLUMNS]; //the whole things view except the header
+char* picture[ROWS][COLUMNS]; //the whole things view except the header
 int score = 0; //score
 int progress = 0; //current progress; from 100
 int ghosts_speed_ratio = 3; //ghosts speed = pac man speed / this ratio
@@ -252,7 +252,7 @@ void updatePicture() {
 			
 			if(bricks[i][j] == -1) picture[i][j] = BRICK_CHAR; //brick here
 			else if(bricks[i][j] == -2) picture[i][j] = PAC_MAN_TRACE_CHAR;//pacman trace
-			else picture[i][j] = ' '; //empty
+			else picture[i][j] = " "; //empty
 			
 		}
 		
@@ -297,7 +297,7 @@ void drawGame() {
     drawHeader();
 
     //print the picture
-    print2DCharArray(ROWS, COLUMNS, picture);
+	print2DStrArray(ROWS, COLUMNS, picture);
 
 }
 
@@ -969,9 +969,8 @@ int arrowToDirection(char a) {
 
 int main(){
 
-    srand(time(NULL)); //for absolute random
-    system("chcp 437"); //support ascii characters
-    cls(); //clear Active Code Page : 437
+	srand(time(NULL)); //for absolute random
+    cls();
 
     init();
 

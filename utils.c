@@ -23,7 +23,7 @@
 //something
 #define SHOULD_NOT_REACH_HERE -1
 
-#define PERCENT_CHAR 37 //percent character
+#define PERCENT_CHAR '%' //percent character
 
 //point = location; x = row, y = column
 typedef struct {
@@ -55,7 +55,7 @@ void randPoint(Location * p, int minx, int maxx, int miny, int maxy) {
 
 }
 
-void print2DCharArray(int rows, int columns, char c[rows][columns]) {
+void print2DStrArray(int rows, int columns, char* c[rows][columns]) {
 
     int i;
     for(i = 0; i < rows; i++) {
@@ -63,7 +63,7 @@ void print2DCharArray(int rows, int columns, char c[rows][columns]) {
         int j;
         for(j = 0; j < columns; j++) {
 
-            printf("%c", c[i][j]);
+            printf("%s", c[i][j]);
 
         }
 

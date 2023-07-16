@@ -4,7 +4,7 @@
 
 A partial PacXon game clone in C, on CLI (you can play the original version [here](https://www.pacxon.net/)).
 
-This game was my final project for the **computer fundamentals and programming** university course, made in **early 2019**.
+This game was my final project for the **computer fundamentals and programming** university course, originally made in **early 2019**.
 
 ![A Screenshot](./Screenshot.png)
 

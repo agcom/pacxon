@@ -1,6 +1,6 @@
 # PacXon
 
-A partial PacXon game clone in C & Windows cmd.exe (you can play the original version [here](https://www.pacxon.net/)).
+A partial PacXon game clone in C, on CLI (you can play the original version [here](https://www.pacxon.net/)).
 
 This game was my final project for the **computer fundamentals and programming** university course, made in **early 2019**.
 
@@ -8,6 +8,22 @@ This game was my final project for the **computer fundamentals and programming**
 
 ## Simple build & run
 
-Open the project in Code::Blocks 17.12 (with MinGW) on a Windows OS, and hit Build and run.
+> Pro-tip: use an **IDE** to build and run the project.
 
-> Running the game might be tricky; because it is left behind as a **legacy**, and it is not packaged properly.
+### Ubuntu
+
+> Tested on Ubuntu 22.04 LTS.
+
+- `sudo apt install cmake gcc make libncurses-dev`.
+- `cmake . && make && ./PacXon`
+
+Or
+
+- `sudo apt install gcc libncurses-dev`
+- `gcc main.c -lncurses && ./a.out`
+
+### Other Operating Systems, including Windows
+
+Figure it out yourself :slightly_smiling_face:.
+
+> Fow Windows, you can check out earlier commit [765f67781980fb90d9b2bdfef960878687298926](https://github.com/agcom/pacxon/tree/765f67781980fb90d9b2bdfef960878687298926) and follow the instructions there.

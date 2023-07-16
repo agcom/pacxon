@@ -1,3 +1,5 @@
+:warning: Not maintained; but, feel free to fork it. :warning:
+
 # PacXon
 
 A partial PacXon game clone in C, on CLI (you can play the original version [here](https://www.pacxon.net/)).

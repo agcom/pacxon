@@ -20,6 +20,8 @@ to dos :
 #include "utils.c"
 #include "ghosts.c"
 #include "pacman.c"
+#include "kbhit.c"
+#include "getch.c"
 
 #define MAX_GHOSTS 100 //maximum capacity of the ghosts array
 

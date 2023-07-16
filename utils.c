@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "getch.c"
+#include "kbhit.c"
 
 //directions
 #define VERTICAL 0b0001

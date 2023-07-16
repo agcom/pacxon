@@ -170,9 +170,11 @@ int linearIntArraySearch(const int N, int array[N], int key) {
 }
 
 void cls() {
-
-    system("cls");
-
+#ifdef WINDOWS
+	system("cls");
+#else
+	system("clear");
+#endif
 }
 
 void nextLocation(Location * next, int direction) {

@@ -67,7 +67,7 @@ void addGhost(int type, int index) {
 		
 		case FLOAT_GHOST : {
 			
-			ghosts[index].locationss = 1;
+			ghosts[index].locations_size = 1;
 			randPoint(&(ghosts[index].locations[0]), 1, ROWS - 2, 1, COLUMNS - 2);
 			ghosts[index].movement = randDirection(1);
 			
@@ -76,7 +76,7 @@ void addGhost(int type, int index) {
 		
 		case RAIL_GHOST : {
 			
-			ghosts[index].locationss = 2;
+			ghosts[index].locations_size = 2;
 			
 			int bricks_count = (ROWS * 2 + COLUMNS * 2) - 4; //count of bricks at the start of the game
 			
@@ -165,7 +165,7 @@ void addGhost(int type, int index) {
 		case BRICK_ZONE_GHOST : {
 			
 			//should initialize the location after the first zone captured
-			ghosts[index].locationss = 1;
+			ghosts[index].locations_size = 1;
 			ghosts[index].locations[0].x = -1;
 			ghosts[index].locations[0].y = -1;
 			ghosts[index].movement = randDirection(1);
@@ -264,7 +264,7 @@ void updatePicture() {
 	for (i = 0; i < ghosts_quantity; i++) {
 		
 		int j;
-		for (j = 0; j < ghosts[i].locationss; j++) {
+		for (j = 0; j < ghosts[i].locations_size; j++) {
 			
 			picture[ghosts[i].locations[j].x][ghosts[i].locations[j].y] = (ghosts[i].type == FLOAT_GHOST
 			                                                               ? FLOAT_GHOST_CHAR : ghosts[i].type ==
@@ -866,14 +866,14 @@ void updateZones() {
 
 void tryCaptureZones() {
 	
-	int ghosts_zones[float_ghosts * FLOAT_GHOST_LOCATIONSS + rail_ghosts * RAIL_GHOST_LOCATIONSS +
-	                 brick_zone_ghosts * BRICK_ZONE_GHOST_LOCATIONSS];
+	int ghosts_zones[float_ghosts * FLOAT_GHOST_LOCATIONS_SIZE + rail_ghosts * RAIL_GHOST_LOCATIONS_SIZE +
+	                 brick_zone_ghosts * BRICK_ZONE_GHOST_LOCATIONS_SIZE];
 	
 	int i;
 	for (i = 0; i < ghosts_quantity; i++) {
 		
 		int j;
-		for (j = 0; j < ghosts[i].locationss; j++) {
+		for (j = 0; j < ghosts[i].locations_size; j++) {
 			
 			ghosts_zones[i] = bricks[ghosts[i].locations[j].x][ghosts[i].locations[j].y];
 			

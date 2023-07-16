@@ -3,30 +3,28 @@
 
 #include "utils.c"
 
-//ghosts type coding
-#define FLOAT_GHOST 0
-#define RAIL_GHOST 1
-#define BRICK_ZONE_GHOST 2
+// Ghosts type coding
+enum {
+	FLOAT_GHOST, RAIL_GHOST, BRICK_ZONE_GHOST
+};
 
-//shapes
+// Shapes
 #define FLOAT_GHOST_CHAR "α"
 #define RAIL_GHOST_CHAR "ß"
 #define BRICK_ZONE_GHOST_CHAR "δ"
 
-#define A_GHOST_MAX_LOCATIONS 10
+// Locations needed sizes
+#define FLOAT_GHOST_LOCATIONS_SIZE 1
+#define BRICK_ZONE_GHOST_LOCATIONS_SIZE 1
+#define RAIL_GHOST_LOCATIONS_SIZE 2
 
-#define FLOAT_GHOST_LOCATIONSS 1
-#define BRICK_ZONE_GHOST_LOCATIONSS 1
-#define RAIL_GHOST_LOCATIONSS 2
+#define MAX_GHOST_LOCATIONS_SIZE 2
 
-//a ghost
 typedef struct {
-	
 	int type;
-	int locationss;
-	Location locations[A_GHOST_MAX_LOCATIONS];
+	int locations_size;
+	Location locations[MAX_GHOST_LOCATIONS_SIZE];
 	int movement;
-	
 } Ghost;
 
 #endif // GHOSTS_C_INCLUDED

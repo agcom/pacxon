@@ -8,6 +8,8 @@ This game was my final project for the **computer fundamentals and programming**
 
 ## Simple build & run
 
-Open the project in Code::Blocks 17.12 (with MinGW) on a Windows OS, and hit Build and run.
+Make sure you have [CMake installed](https://cmake.org/install/); then issue the following commands (in a Linux shell or Windows's PowerShell):
 
-> Running the game might be tricky; because it is left behind as a **legacy**, and it is not packaged properly.
+```shell
+cmake . && make && ./PacXon
+```

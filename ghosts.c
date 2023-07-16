@@ -1,7 +1,6 @@
 #ifndef GHOSTS_C_INCLUDED
 #define GHOSTS_C_INCLUDED
 
-#include "utils.c"
 #include "loc.c"
 
 // Ghosts type coding

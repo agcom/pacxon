@@ -10,7 +10,7 @@ to dos :
     - save and load
     - levels
     - menu
-    - reflect_dir method (int reflect_dir(const int dir, const int mirror_pos)
+    - reflect_dir method (int reflect_dir(const dir_t dir, const int mirror_pos)
     - colored char struct
 **/
 
@@ -522,7 +522,7 @@ void move_ghosts() {
 	}
 }
 
-bool can_pac_man_move(const int dir) {
+bool can_pac_man_move(const dir_t dir) {
 	if (dir & HORIZONTAL) {
 		if (dir & LEFT) return pm.location.y - 1 >= 0; // Left
 		else return pm.location.y + 1 < COLUMNS; // Right
@@ -624,7 +624,7 @@ void update_progress() {
 	is_view_update = 0;
 }
 
-bool move_pac_man(const int dir, const int auto_call) {
+bool move_pac_man(const dir_t dir, const int auto_call) {
 	if (!can_pac_man_move(dir)) return false;
 	
 	if (!auto_call && pm.movement != -1) {

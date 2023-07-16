@@ -15,7 +15,7 @@ void rand_loc(loc_t *p, const int min_x, const int max_x, const int min_y, const
 	p->y = min_y + rand() % (max_y - min_y + 1);
 }
 
-void next_loc(loc_t *next, const int dir) {
+void next_loc(loc_t *next, const dir_t dir) {
 	if (dir & VERTICAL) {
 		if (dir & UP) next->x--;
 		else next->x++;
@@ -27,7 +27,7 @@ void next_loc(loc_t *next, const int dir) {
 	}
 }
 
-int reverse_dir(int dir) {
+int reverse_dir(dir_t dir) {
 	if (dir & HORIZONTAL) dir ^= LEFT;
 	if (dir & VERTICAL) dir ^= UP;
 	

@@ -24,6 +24,6 @@ Or
 
 ### Other Operating Systems, including Windows
 
-Figure it out yourself :slightly_smiling_face:.
+Figure it out :slightly_smiling_face:.
 
-> Fow Windows, you can check out earlier commit [765f67781980fb90d9b2bdfef960878687298926](https://github.com/agcom/pacxon/tree/765f67781980fb90d9b2bdfef960878687298926) and follow the instructions there.
+> For Windows, you can check out earlier commit [765f67781980fb90d9b2bdfef960878687298926](https://github.com/agcom/pacxon/tree/765f67781980fb90d9b2bdfef960878687298926) and follow the instructions said there.

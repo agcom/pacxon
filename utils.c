@@ -1,10 +1,17 @@
 #ifndef UTILS_C_INCLUDED
 #define UTILS_C_INCLUDED
 
+#ifdef WINDOWS
+#include <windows.h>
+#define SLEEP_MS(x) Sleep(x)
+#else
+#include <unistd.h>
+#define SLEEP_MS(x) usleep((x) * 1000)
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <time.h>
 #include "kbhit.c"
 
 // AKC = Arrow Key Code
@@ -142,11 +149,7 @@ bool shift_left_int_arr(const int size, int arr[size], const int remove_index) {
 }
 
 void sleep_ms(const long ms) {
-	struct timespec ts;
-	ts.tv_sec = ms / 1000;
-	ts.tv_nsec = (ms % 1000) * 1000000;
-	
-	nanosleep(&ts, NULL);
+	SLEEP_MS(ms);
 }
 
 void bug_alert(const char *msg) {

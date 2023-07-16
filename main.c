@@ -1006,7 +1006,7 @@ int main() {
 	
 	while (1) {
 		
-		if (_kbhit()) {
+		if (kbhit()) {
 			
 			int c = getch();
 			

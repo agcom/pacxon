@@ -239,7 +239,7 @@ int randDirection(int diagonal) {
 
 void purgePressedKeys() {
 	
-	while (_kbhit()) getch();
+	while (kbhit()) getch();
 	
 }
 

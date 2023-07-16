@@ -23,6 +23,7 @@ to dos :
 #include "pacman.c"
 #include "kbhit.c"
 #include "dir.c"
+#include "loc.c"
 
 #define MAX_GHOSTS 100 // Maximum capacity of the ghosts array
 

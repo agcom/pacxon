@@ -1001,16 +1001,6 @@ int main(){
                     break;
                 }
 
-                case SKCC : {
-
-                    bricks[pm.location.x][pm.location.y] = 0;
-                    updateZones();
-                    tryCaptureZones();
-
-                }
-
-                //default : printf("%d\t", c);
-
             }
 
         }

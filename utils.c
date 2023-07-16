@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <windows.h>
 
 //directions
 #define VERTICAL 0b0001

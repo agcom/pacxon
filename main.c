@@ -16,6 +16,7 @@ to dos :
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "utils.c"
 #include "ghosts.c"
 #include "pacman.c"

@@ -84,6 +84,38 @@ void printIntArray(int length, int array[length]) {
 
 }
 
+void printDirection(int direction) {
+	
+	int vertical_printed = 0;
+	
+	if(direction & VERTICAL) {
+		
+		if(direction & UP) printf("Up");
+		else printf("Down");
+		
+		vertical_printed = 1;
+		
+	}
+	
+	if(direction & HORIZONTAL) {
+		
+		if(direction & LEFT) {
+			
+			if(vertical_printed) printf(" Left");
+			else printf("Left");
+			
+		} else {
+			
+			if(vertical_printed) printf(" Right");
+			else printf("Right");
+			
+		}
+		
+	}
+	
+	
+}
+
 void printDirectionsArray(int length, int directions[length]) {
 
     int i;
@@ -94,38 +126,6 @@ void printDirectionsArray(int length, int directions[length]) {
         if(i != length - 1) printf(", ");
 
     }
-
-}
-
-void printDirection(int direction) {
-
-    int vertical_printed = 0;
-
-    if(direction & VERTICAL) {
-
-        if(direction & UP) printf("Up");
-        else printf("Down");
-
-        vertical_printed = 1;
-
-    }
-
-    if(direction & HORIZONTAL) {
-
-        if(direction & LEFT) {
-
-            if(vertical_printed) printf(" Left");
-            else printf("Left");
-
-        } else {
-
-            if(vertical_printed) printf(" Right");
-            else printf("Right");
-
-        }
-
-    }
-
 
 }
 
@@ -238,6 +238,12 @@ void purgePressedKeys() {
 
 }
 
+int areEqualPoints(Location p1, Location p2) {
+	
+	return p1.x == p2.x && p1.y == p2.y;
+	
+}
+
 int areNeighborPoints(Location p1, Location p2) {
 
     if(areEqualPoints(p1, p2)) return 0;
@@ -254,12 +260,6 @@ int areNeighborPoints(Location p1, Location p2) {
     }
 
     return 0;
-
-}
-
-int areEqualPoints(Location p1, Location p2) {
-
-    return p1.x == p2.x && p1.y == p2.y;
 
 }
 

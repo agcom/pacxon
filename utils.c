@@ -439,6 +439,14 @@ int shiftLeftIntArray(int N, int array[N], int remove_index) {
 
 }
 
+void Sleep(long ms) {
+	struct timespec ts;
+	ts.tv_sec = ms / 1000;
+	ts.tv_nsec = (ms % 1000) * 1000000;
+	
+	nanosleep(&ts, NULL);
+}
+
 void bugAlert(char * msg) {
 
     printf("Bug : %s", msg);

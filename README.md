@@ -28,4 +28,4 @@ Or
 
 Figure it out :slightly_smiling_face:.
 
-> For Windows, you can check out earlier commit [765f67781980fb90d9b2bdfef960878687298926](https://github.com/agcom/pacxon/tree/765f67781980fb90d9b2bdfef960878687298926) and follow the instructions said there.
+> For Windows, you can also check out earlier release [v0.1.0](https://github.com/agcom/pacxon/tree/v0.1.0) and follow the instructions said there.

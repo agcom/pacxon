@@ -10,4 +10,4 @@ This game was my final project for the **computer fundamentals and programming**
 
 Open the project in Code::Blocks 17.12 (with MinGW) on a Windows OS, and hit Build and run.
 
-> Running the game might be tricky; because it is a legacy software now, and it was not packaged professionally.
+> Running the game might be tricky; because it is left behind as a **legacy**, and it is not packaged properly.

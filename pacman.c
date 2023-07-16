@@ -7,11 +7,11 @@
 #define PAC_MAN_TRACE_CHAR "░"
 
 typedef struct {
-
-    Location location;
-    int movement;
-    int lives;
-
+	
+	Location location;
+	int movement;
+	int lives;
+	
 } PacMan;
 
 #endif // PACMAN_C_INCLUDED

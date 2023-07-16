@@ -3,171 +3,121 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "kbhit.c"
 
-//directions
+// Directions' masks
 #define VERTICAL 0b0001
 #define HORIZONTAL 0b0010
 #define LEFT 0b0100
 #define UP 0b1000
 
-//Key Char Codes = KCC
-#define LAKCC KEY_LEFT //Left Arrow Key Char Code
-#define RAKCC KEY_RIGHT //Right Arrow Key Char Code
-#define UAKCC KEY_UP //Up Arrow Key Char Code
-#define DAKCC KEY_DOWN //Down Arrow Key Char Code
-#define SKCC '\n' //Enter Key Char Code
+// AKC = Arrow Key Code
+#define LEFT_AKC KEY_LEFT
+#define RIGHT_AKC KEY_RIGHT
+#define UP_AKC KEY_UP
+#define DOWN_AKC KEY_DOWN
 
-//something
-#define SHOULD_NOT_REACH_HERE -1
+#define SHOULD_NOT_REACH_HERE (-1)
 
-#define PERCENT_CHAR '%' //percent character
-
-//point = location; x = row, y = column
+// x = row & y = column
 typedef struct {
-	
 	int x, y;
-	
-} Location;
+} loc_t;
 
-//clockwise order
-static int directions[8] = {VERTICAL | UP, //up
-                            HORIZONTAL | VERTICAL | UP | !LEFT, //up right
-                            HORIZONTAL | !LEFT, //right
-                            HORIZONTAL | VERTICAL | !UP | !LEFT, //down right
-                            VERTICAL | !UP, //down
-                            HORIZONTAL | VERTICAL | !UP | LEFT, //down left
-                            HORIZONTAL | LEFT, //left
-                            HORIZONTAL | VERTICAL | UP | LEFT}; //up left
+// Clock-wise order
+const int directions_all[8] = {
+		VERTICAL | UP, // UP
+		HORIZONTAL | VERTICAL | UP | !LEFT, // Up Right
+		HORIZONTAL | !LEFT, // Right
+		HORIZONTAL | VERTICAL | !UP | !LEFT, // Down Rigth
+		VERTICAL | !UP, // Down
+		HORIZONTAL | VERTICAL | !UP | LEFT, // Down Left
+		HORIZONTAL | LEFT, // Left
+		HORIZONTAL | VERTICAL | UP | LEFT  // Up Left
+};
 
-int randFlag() {
-	
+bool rand_bool() {
 	return rand() % 2;
-	
 }
 
-void randPoint(Location *p, int minx, int maxx, int miny, int maxy) {
-	
-	p->x = minx + rand() % (maxx - minx + 1);
-	p->y = miny + rand() % (maxy - miny + 1);
-	
+void rand_loc(loc_t *p, const int min_x, const int max_x, const int min_y, const int max_y) {
+	p->x = min_x + rand() % (max_x - min_x + 1);
+	p->y = min_y + rand() % (max_y - min_y + 1);
 }
 
-void print2DStrArray(int rows, int columns, char *c[rows][columns]) {
-	
+void print_2d_str_arr(const int rows, const int columns, const char *arr[rows][columns]) {
 	int i;
 	for (i = 0; i < rows; i++) {
-		
 		int j;
 		for (j = 0; j < columns; j++) {
-			
-			printf("%s", c[i][j]);
-			
+			printf("%s", arr[i][j]);
 		}
-		
 		printf("\r\n");
-		
 	}
-	
 }
 
-void printIntArray(int length, int array[length]) {
-	
+void print_int_arr(const int size, const int arr[size]) {
 	int i;
-	for (i = 0; i < length; i++) {
-		
-		printf("%d", array[i]);
-		
-		if (i != length - 1) printf(", ");
-		
+	for (i = 0; i < size; i++) {
+		printf("%d", arr[i]);
+		if (i != size - 1) printf(", ");
 	}
-	
 }
 
-void printDirection(int direction) {
+void print_dir(const int dir) {
+	bool is_vertical_printed = false;
 	
-	int vertical_printed = 0;
-	
-	if (direction & VERTICAL) {
-		
-		if (direction & UP) printf("Up");
+	if (dir & VERTICAL) {
+		if (dir & UP) printf("Up");
 		else printf("Down");
 		
-		vertical_printed = 1;
-		
+		is_vertical_printed = true;
 	}
 	
-	if (direction & HORIZONTAL) {
+	if (dir & HORIZONTAL) {
+		if (is_vertical_printed) printf(" ");
 		
-		if (direction & LEFT) {
-			
-			if (vertical_printed) printf(" Left");
-			else printf("Left");
-			
-		} else {
-			
-			if (vertical_printed) printf(" Right");
-			else printf("Right");
-			
-		}
-		
+		if (dir & LEFT) printf("Left");
+		else printf("Right");
 	}
-	
-	
 }
 
-void printDirectionsArray(int length, int directions[length]) {
-	
+void print_dir_arr(const int size, const int dirs[size]) {
 	int i;
-	for (i = 0; i < length; i++) {
-		
-		printDirection(directions[i]);
-		
-		if (i != length - 1) printf(", ");
-		
+	for (i = 0; i < size; i++) {
+		print_dir(dirs[i]);
+		if (i != size - 1) printf(", ");
 	}
-	
 }
 
-int Replace2DintArray(int rows, int columns, int array[rows][columns], int key, int replace) {
-	
+int replace_2d_int_arr(const int rows, const int columns, int arr[rows][columns], const int key, const int replace) {
 	int replaceds = 0;
 	
 	int i;
 	for (i = 0; i < rows; i++) {
-		
 		int j;
 		for (j = 0; j < columns; j++) {
-			
-			if (array[i][j] == key) {
-				
-				array[i][j] = replace;
+			if (arr[i][j] == key) {
+				arr[i][j] = replace;
 				replaceds++;
-				
 			}
-			
 		}
-		
 	}
 	
 	return replaceds;
-	
 }
 
-int linearIntArraySearch(const int N, int array[N], int key) {
-	
+int linear_int_arr_search(const int size, const int arr[size], const int key) {
 	int i;
-	for (i = 0; i < N; i++) {
-		
-		if (array[i] == key) return i;
-		
+	for (i = 0; i < size; i++) {
+		if (arr[i] == key) return i;
 	}
 	
 	return -1;
-	
 }
 
-void cls() {
+void clear_screen() {
 #ifdef WINDOWS
 	system("cls");
 #else
@@ -175,275 +125,164 @@ void cls() {
 #endif
 }
 
-void nextLocation(Location *next, int direction) {
-	
-	if (direction & VERTICAL) {
-		
-		if (direction & UP) { //up
-			
-			next->x--;
-			
-		} else { //down
-			
-			next->x++;
-			
-		}
-		
+void next_loc(loc_t *next, const int dir) {
+	if (dir & VERTICAL) {
+		if (dir & UP) next->x--;
+		else next->x++;
 	}
 	
-	if (direction & HORIZONTAL) {
-		
-		if (direction & LEFT) { //left
-			
-			next->y--;
-			
-		} else { //right
-			
-			next->y++;
-			
-		}
-		
+	if (dir & HORIZONTAL) {
+		if (dir & LEFT) next->y--;
+		else next->y++;
 	}
-	
 }
 
-int reverseDirection(int direction) {
+int reverse_dir(int dir) {
+	if (dir & HORIZONTAL) dir ^= LEFT;
+	if (dir & VERTICAL) dir ^= UP;
 	
-	if (direction & HORIZONTAL) direction ^= LEFT;
-	
-	if (direction & VERTICAL) direction ^= UP;
-	
-	return direction;
-	
+	return dir;
 }
 
-int randDirection(int diagonal) {
-	
-	if (diagonal) {
-		
-		return VERTICAL | HORIZONTAL | (randFlag() ? LEFT : !LEFT) | (randFlag() ? UP : !UP);
-		
-	} else {
-		
-		int rnd = rand() % 4;
-		
-		return rnd == 0 ? (HORIZONTAL | LEFT) : rnd == 1 ? (VERTICAL | UP) : rnd == 2 ? (HORIZONTAL | !LEFT) : rnd == 3
-		                                                                                                       ? (VERTICAL |
-		                                                                                                          !UP)
-		                                                                                                       : SHOULD_NOT_REACH_HERE;
-		
-		
+int rand_dir(const bool is_diagonal) {
+	if (is_diagonal) return VERTICAL | HORIZONTAL | (rand_bool() ? LEFT : !LEFT) | (rand_bool() ? UP : !UP);
+	else {
+		const int rnd = rand() % 4;
+		return rnd == 0 ? (HORIZONTAL | LEFT) :
+		       rnd == 1 ? (VERTICAL | UP) :
+		       rnd == 2 ? (HORIZONTAL | !LEFT) :
+		       rnd == 3 ? (VERTICAL | !UP) : SHOULD_NOT_REACH_HERE;
 	}
 	
 }
 
-void purgePressedKeys() {
-	
+void purge_keys() {
 	while (kbhit()) getch();
-	
 }
 
-int areEqualPoints(Location p1, Location p2) {
-	
+bool are_equal_locs(const loc_t p1, const loc_t p2) {
 	return p1.x == p2.x && p1.y == p2.y;
-	
 }
 
-int areNeighborPoints(Location p1, Location p2) {
-	
-	if (areEqualPoints(p1, p2)) return 0;
+bool are_neighbour_locs(const loc_t p1, const loc_t p2) {
+	if (are_equal_locs(p1, p2)) return false;
 	
 	int i;
 	for (i = 0; i < 8; i++) {
-		
-		Location temp = p2;
-		
-		nextLocation(&temp, directions[i]);
-		
-		if (areEqualPoints(p1, temp)) return 1;
-		
+		loc_t t = p2;
+		next_loc(&t, directions_all[i]);
+		if (are_equal_locs(p1, t)) return true;
 	}
 	
-	return 0;
-	
+	return false;
 }
 
-void printPointArray(int length, Location p[length]) {
-	
-	int i;
-	for (i = 0; i < length; i++) {
-		
-		printf("(%d, %d) ", p[i].x, p[i].y);
-		
-	}
-	
+void locs_diff_vector(const loc_t p1, const loc_t p2, loc_t *res) {
+	res->x = p2.x - p1.x;
+	res->y = p2.y - p1.y;
 }
 
-void pVector(Location p1, Location p2, Location *result) {
-	
-	result->x = p2.x - p1.x;
-	result->y = p2.y - p1.y;
-	
+int loc_vector_to_dir(const loc_t vector) {
+	if (vector.x < 0 && vector.y < 0) return VERTICAL | HORIZONTAL | LEFT | UP; // Up Left
+	else if (vector.x < 0 && vector.y == 0) return VERTICAL | UP; // Up
+	else if (vector.x < 0 && vector.y > 0) return VERTICAL | HORIZONTAL | !LEFT | UP; // Up Right
+	else if (vector.x == 0 && vector.y < 0) return HORIZONTAL | LEFT; // Left
+	else if (vector.x == 0 && vector.y > 0) return HORIZONTAL | !LEFT; // Right
+	else if (vector.x > 0 && vector.y < 0) return HORIZONTAL | VERTICAL | !UP | LEFT; // Down Left
+	else if (vector.x > 0 && vector.y == 0) return VERTICAL | !UP; // Down
+	else if (vector.x > 0 && vector.y > 0) return VERTICAL | HORIZONTAL | !UP | !LEFT; // Down Right
+	else return SHOULD_NOT_REACH_HERE; // Zero vector
 }
 
-int vectorToDirection(Location vector) {
+bool are_size_by_size_locs(const loc_t l1, const loc_t l2, const bool check_being_neighbors) {
+	if (check_being_neighbors && !are_neighbour_locs(l1, l2)) return false;
 	
-	if (vector.x < 0 && vector.y < 0) { //up left
-		
-		return VERTICAL | HORIZONTAL | LEFT | UP;
-		
-	} else if (vector.x < 0 && vector.y == 0) { //up
-		
-		return VERTICAL | UP;
-		
-	} else if (vector.x < 0 && vector.y > 0) { //up right
-		
-		return VERTICAL | HORIZONTAL | !LEFT | UP;
-		
-	} else if (vector.x == 0 && vector.y < 0) { //left
-		
-		return HORIZONTAL | LEFT;
-		
-	} else if (vector.x == 0 && vector.y == 0) { //zero vector
-		
-		return SHOULD_NOT_REACH_HERE;
-		
-	} else if (vector.x == 0 && vector.y > 0) { //right
-		
-		return HORIZONTAL | !LEFT;
-		
-	} else if (vector.x > 0 && vector.y < 0) { //down left
-		
-		return HORIZONTAL | VERTICAL | !UP | LEFT;
-		
-	} else if (vector.x > 0 && vector.y == 0) { //down
-		
-		return VERTICAL | !UP;
-		
-	} else if (vector.x > 0 && vector.y > 0) { //down right
-		
-		return VERTICAL | HORIZONTAL | !UP | !LEFT;
-		
-	}
+	loc_t vector;
+	locs_diff_vector(l1, l2, &vector);
 	
+	const int diff_dir = loc_vector_to_dir(vector);
+	if (diff_dir & VERTICAL && diff_dir & HORIZONTAL) return false;
+	else return true;
 }
 
-int areSideBySideLocations(Location l1, Location l2, int check_being_neighbors) {
-	
-	if (check_being_neighbors && !areNeighborPoints(l1, l2)) return 0;
-	
-	Location vector;
-	
-	pVector(l1, l2, &vector);
-	
-	int sbs = vectorToDirection(vector);
-	
-	if (sbs & VERTICAL && sbs & HORIZONTAL) return 0;
-	else return 1;
-	
-}
-
-void printPoint(Location p) {
-	
+void print_loc(const loc_t p) {
 	printf("(%d, %d)", p.x, p.y);
-	
 }
 
-int reflectDirection(int direction, int mirror_position) {
-	
-	///
-	
+void print_loc_arr(const int size, const loc_t locs[size]) {
+	int i;
+	for (i = 0; i < size; i++) {
+		print_loc(locs[i]);
+		printf(" ");
+	}
 }
 
-int findCommonElementsOfIntArrays(int result_length, int array1_length, int array2_length, int result[result_length],
-                                  int array1[array1_length], int array2[array2_length]) {
+int find_common_elements_of_int_arrs(
+		const int res_size, const int arr1_size, const int arr2_size, int res[res_size],
+		const int arr1[arr1_size], const int arr2[arr2_size]
+) {
 	
-	int rai = 0; //result append index
-	int has_space = result_length != 0;
+	int rai = 0; // Result Append Index
+	bool has_space = res_size != 0;
 	
-	//set the smaller length array as base
-	
-	if (array1_length < array2_length) {
-		
+	// Set the smaller length array as base
+	if (arr1_size < arr2_size) {
 		int i;
-		for (i = 0; i < array1_length; i++) {
-			
-			if (linearIntArraySearch(array2_length, array2, array1[i]) != -1) { //found a common int
-				
-				if (has_space) result[rai] = array1[i];
-				
+		for (i = 0; i < arr1_size; i++) {
+			if (linear_int_arr_search(arr2_size, arr2, arr1[i]) != -1) { // Found a common int
+				if (has_space) res[rai] = arr1[i];
 				rai++;
 				
-				if (rai == result_length) has_space = 0;
-				
+				if (rai == res_size) has_space = false;
 			}
-			
 		}
-		
 	} else {
-		
 		int i;
-		for (i = 0; i < array2_length; i++) {
-			
-			if (linearIntArraySearch(array1_length, array1, array2[i]) != -1) { //found a common int
-				
-				if (has_space) result[rai] = array2[i];
-				
+		for (i = 0; i < arr2_size; i++) {
+			if (linear_int_arr_search(arr1_size, arr1, arr2[i]) != -1) { // Found a common int
+				if (has_space) res[rai] = arr2[i];
 				rai++;
 				
-				if (rai == result_length) has_space = 0;
-				
+				if (rai == res_size) has_space = false;
 			}
-			
 		}
-		
 	}
 	
 	return rai;
-	
 }
 
-void insertionSortIntArray(int length, int array[length]) {
-	
+void insertion_sort_int_arr(int size, int arr[size]) {
 	int i;
-	for (i = 1; i < length; i++) {
-		
+	for (i = 1; i < size; i++) {
 		int j;
-		for (j = i; array[j] < array[j - 1] && j > 0; j--) {
-			
-			int t = array[j];
-			array[j] = array[j - 1];
-			array[j - 1] = t;
-			
+		for (j = i; arr[j] < arr[j - 1] && j > 0; j--) {
+			const int t = arr[j];
+			arr[j] = arr[j - 1];
+			arr[j - 1] = t;
 		}
-		
 	}
-	
 }
 
-int shiftLeftIntArray(int N, int array[N], int remove_index) {
+bool shift_left_int_arr(const int size, int arr[size], const int remove_index) {
 	
-	if (remove_index < 0) return 0;
-	if (remove_index == N - 1) return 1;
+	if (remove_index < 0 || remove_index >= size) return false;
+	else if (remove_index == size - 1) return true;
 	
-	int executed = 0;
+	bool executed = false;
 	
 	int i;
-	for (i = remove_index + 1; i < N; i++) {
+	for (i = remove_index + 1; i < size; i++) {
+		const int t = arr[i];
+		arr[i] = arr[i - 1];
+		arr[i - 1] = t;
 		
-		int t = array[i];
-		array[i] = array[i - 1];
-		array[i - 1] = t;
-		
-		if (!executed) executed = 1;
-		
+		if (!executed) executed = true;
 	}
 	
 	return executed;
-	
 }
 
-void Sleep(long ms) {
+void sleep_ms(const long ms) {
 	struct timespec ts;
 	ts.tv_sec = ms / 1000;
 	ts.tv_nsec = (ms % 1000) * 1000000;
@@ -451,36 +290,26 @@ void Sleep(long ms) {
 	nanosleep(&ts, NULL);
 }
 
-void bugAlert(char *msg) {
-	
-	printf("Bug : %s", msg);
-	Sleep(1000);
-	
+void bug_alert(const char *msg) {
+	printf("Bug: %s", msg);
+	sleep_ms(1000);
 }
 
-int turnDirection(int direction, int clockwise, int steps) {
+int turn_dir(int dir, const int clockwise, const int steps) {
 	
-	//find its index at directions
+	// Find its index at directions
 	int index;
-	if ((index = linearIntArraySearch(8, directions, direction)) == -1) return SHOULD_NOT_REACH_HERE; //not a direction
+	if ((index = linear_int_arr_search(8, directions_all, dir)) == -1)
+		return SHOULD_NOT_REACH_HERE; // Not a direction
 	
 	int i;
 	for (i = 0; i < steps; i++) {
-		
-		if (clockwise) {
-			
-			direction = directions[index == 7 ? 0 : index + 1];
-			
-		} else {
-			
-			direction = directions[index == 0 ? 7 : index - 1];
-			
-		}
+		if (clockwise) dir = directions_all[index == 7 ? 0 : index + 1];
+		else dir = directions_all[index == 0 ? 7 : index - 1];
 		
 	}
 	
-	return direction;
-	
+	return dir;
 }
 
 #endif // UTILS_C_INCLUDED

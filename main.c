@@ -10,7 +10,7 @@ to dos :
     - save and load
     - levels
     - menu
-    - reflectDirection method
+    - reflect_dir method (int reflect_dir(const int dir, const int mirror_pos)
     - colored char struct
 **/
 
@@ -40,7 +40,7 @@ int float_ghosts = 2;
 int rail_ghosts = 1;
 int brick_zone_ghosts = 0;
 int ghosts_quantity; //count of active ghosts
-Ghost ghosts[MAX_GHOSTS]; //ghosts pool
+ghost_t ghosts[MAX_GHOSTS]; //ghosts pool
 int bricks[ROWS][COLUMNS]; //-1 for bricks, >= 0 for zones
 int view_validation = 0; //the drawn picture is the current state or not, if not redraw it
 PacMan pm; //the hero
@@ -49,7 +49,7 @@ int score = 0; //score
 int progress = 0; //current progress; from 100
 int ghosts_speed_ratio = 3; //ghosts speed = pac man speed / this ratio
 
-int isBrickThere(Location p) {
+int isBrickThere(loc_t p) {
 	
 	//check location to be in bounds
 	if (p.x < 0 || p.x > ROWS - 1 || p.y < 0 || p.y > COLUMNS - 1) return 0; //out of bound location
@@ -67,16 +67,16 @@ void addGhost(int type, int index) {
 		
 		case FLOAT_GHOST : {
 			
-			ghosts[index].locations_size = 1;
-			randPoint(&(ghosts[index].locations[0]), 1, ROWS - 2, 1, COLUMNS - 2);
-			ghosts[index].movement = randDirection(1);
+			ghosts[index].locs_size = 1;
+			rand_loc(&(ghosts[index].locs[0]), 1, ROWS - 2, 1, COLUMNS - 2);
+			ghosts[index].movement = rand_dir(1);
 			
 			break;
 		}
 		
 		case RAIL_GHOST : {
 			
-			ghosts[index].locations_size = 2;
+			ghosts[index].locs_size = 2;
 			
 			int bricks_count = (ROWS * 2 + COLUMNS * 2) - 4; //count of bricks at the start of the game
 			
@@ -93,8 +93,8 @@ void addGhost(int type, int index) {
 						
 						if (counter == rand_room) {
 							
-							ghosts[index].locations[0].x = i;
-							ghosts[index].locations[0].y = j;
+							ghosts[index].locs[0].x = i;
+							ghosts[index].locs[0].y = j;
 							
 							//break both loops
 							i = ROWS;
@@ -115,12 +115,12 @@ void addGhost(int type, int index) {
 			int possiblitites_append = 0;
 			for (i = 0; i < 8; i++) {
 				
-				Location t = ghosts[index].locations[0];
-				nextLocation(&t, directions[i]);
+				loc_t t = ghosts[index].locs[0];
+				next_loc(&t, directions_all[i]);
 				
 				if (isBrickThere(t)) {
 					
-					possiblitites[possiblitites_append++] = directions[i];
+					possiblitites[possiblitites_append++] = directions_all[i];
 					
 				}
 				
@@ -128,31 +128,31 @@ void addGhost(int type, int index) {
 			
 			ghosts[index].movement = possiblitites[rand() % 2];
 			
-			ghosts[index].locations[1] = ghosts[index].locations[0];
+			ghosts[index].locs[1] = ghosts[index].locs[0];
 			
 			if (ghosts[index].movement & VERTICAL) { //vertical
 				
 				//left or right
-				if (ghosts[index].locations[0].y == 0) { //right
+				if (ghosts[index].locs[0].y == 0) { //right
 					
-					nextLocation(&ghosts[index].locations[1], HORIZONTAL | !LEFT);
+					next_loc(&ghosts[index].locs[1], HORIZONTAL | !LEFT);
 					
 				} else { //left
 					
-					nextLocation(&ghosts[index].locations[1], HORIZONTAL | LEFT);
+					next_loc(&ghosts[index].locs[1], HORIZONTAL | LEFT);
 					
 				}
 				
 			} else { //horizontal
 				
 				//up or down
-				if (ghosts[index].locations[0].x == 0) { //down
+				if (ghosts[index].locs[0].x == 0) { //down
 					
-					nextLocation(&ghosts[index].locations[1], VERTICAL | !UP);
+					next_loc(&ghosts[index].locs[1], VERTICAL | !UP);
 					
 				} else { //up
 					
-					nextLocation(&ghosts[index].locations[1], VERTICAL | UP);
+					next_loc(&ghosts[index].locs[1], VERTICAL | UP);
 					
 				}
 				
@@ -165,10 +165,10 @@ void addGhost(int type, int index) {
 		case BRICK_ZONE_GHOST : {
 			
 			//should initialize the location after the first zone captured
-			ghosts[index].locations_size = 1;
-			ghosts[index].locations[0].x = -1;
-			ghosts[index].locations[0].y = -1;
-			ghosts[index].movement = randDirection(1);
+			ghosts[index].locs_size = 1;
+			ghosts[index].locs[0].x = -1;
+			ghosts[index].locs[0].y = -1;
+			ghosts[index].movement = rand_dir(1);
 			
 			break;
 		}
@@ -264,9 +264,9 @@ void updatePicture() {
 	for (i = 0; i < ghosts_quantity; i++) {
 		
 		int j;
-		for (j = 0; j < ghosts[i].locations_size; j++) {
+		for (j = 0; j < ghosts[i].locs_size; j++) {
 			
-			picture[ghosts[i].locations[j].x][ghosts[i].locations[j].y] = (ghosts[i].type == FLOAT_GHOST
+			picture[ghosts[i].locs[j].x][ghosts[i].locs[j].y] = (ghosts[i].type == FLOAT_GHOST
 			                                                               ? FLOAT_GHOST_CHAR : ghosts[i].type ==
 			                                                                                    RAIL_GHOST
 			                                                                                    ? RAIL_GHOST_CHAR :
@@ -286,7 +286,7 @@ void updatePicture() {
 
 void drawHeader() {
 	
-	printf("Lives: %d\tScore: %d\tProgress: %d/%d%c\r\n", pm.lives, score, progress, WIN_PROGRESS, PERCENT_CHAR);
+	printf("Lives: %d\tScore: %d\tProgress: %d/%d%%\r\n", pm.lives, score, progress, WIN_PROGRESS);
 	
 }
 
@@ -297,13 +297,13 @@ void drawGame() {
 	
 	updatePicture();
 	
-	cls();
+	clear_screen();
 	
 	//print the header
 	drawHeader();
 	
 	//print the picture
-	print2DStrArray(ROWS, COLUMNS, picture);
+	print_2d_str_arr(ROWS, COLUMNS, picture);
 	
 }
 
@@ -325,25 +325,25 @@ void moveGhost(int i) {
 			
 			if (ghosts[i].movement == -1) break;
 			
-			Location next = ghosts[i].locations[0];
+			loc_t next = ghosts[i].locs[0];
 			
-			nextLocation(&next, ghosts[i].movement);
+			next_loc(&next, ghosts[i].movement);
 			
 			if (!isBrickThere(next)) { //execute the move
 				
-				ghosts[i].locations[0] = next;
+				ghosts[i].locs[0] = next;
 				view_validation = 0;
 				
 			} else { //opposite the vertical movement
 				
 				ghosts[i].movement = ghosts[i].movement ^ UP; //opposite it
 				//reset the point
-				next = ghosts[i].locations[0];
-				nextLocation(&next, ghosts[i].movement);
+				next = ghosts[i].locs[0];
+				next_loc(&next, ghosts[i].movement);
 				
 				if (!isBrickThere(next)) { //execute the move
 					
-					ghosts[i].locations[0] = next;
+					ghosts[i].locs[0] = next;
 					view_validation = 0;
 					
 				} else { //opposite the horizontal movement
@@ -351,24 +351,24 @@ void moveGhost(int i) {
 					ghosts[i].movement = ghosts[i].movement ^ UP; //undo vertical changes
 					ghosts[i].movement = ghosts[i].movement ^ LEFT; //opposite it
 					//reset the point
-					next = ghosts[i].locations[0];
-					nextLocation(&next, ghosts[i].movement);
+					next = ghosts[i].locs[0];
+					next_loc(&next, ghosts[i].movement);
 					
 					if (!isBrickThere(next)) { //execute the move
 						
-						ghosts[i].locations[0] = next;
+						ghosts[i].locs[0] = next;
 						view_validation = 0;
 						
 					} else { //reverse both movements
 						
 						ghosts[i].movement = ghosts[i].movement ^ UP;
 						//reset the point
-						next = ghosts[i].locations[0];
-						nextLocation(&next, ghosts[i].movement);
+						next = ghosts[i].locs[0];
+						next_loc(&next, ghosts[i].movement);
 						
 						if (!isBrickThere(next)) { //execute the move
 							
-							ghosts[i].locations[0] = next;
+							ghosts[i].locs[0] = next;
 							view_validation = 0;
 							
 						} else { //stuck
@@ -383,15 +383,15 @@ void moveGhost(int i) {
 							int j;
 							for (j = 0; j < 8; j++) {
 								
-								if (directions[j] & VERTICAL && directions[j] & HORIZONTAL)
+								if (directions_all[j] & VERTICAL && directions_all[j] & HORIZONTAL)
 									continue; //skip 2D directions
 								
-								Location t = ghosts[i].locations[0];
-								nextLocation(&t, directions[j]);
+								loc_t t = ghosts[i].locs[0];
+								next_loc(&t, directions_all[j]);
 								
 								if (!isBrickThere(t)) { //add
 									
-									possible_directions[pdai++] = directions[j];
+									possible_directions[pdai++] = directions_all[j];
 									
 								}
 								
@@ -406,7 +406,7 @@ void moveGhost(int i) {
 							else {
 								
 								//undo changes
-								ghosts[i].movement = reverseDirection(ghosts[i].movement);
+								ghosts[i].movement = reverse_dir(ghosts[i].movement);
 								
 								//debug
 //                                printf("current direction : ");
@@ -428,7 +428,7 @@ void moveGhost(int i) {
 										
 										while (direction != possible_directions[k]) {
 											
-											direction = turnDirection(direction, j, 1);
+											direction = turn_dir(direction, j, 1);
 											changes++;
 											
 										}
@@ -452,7 +452,7 @@ void moveGhost(int i) {
 								
 								if (pdai == 1) {
 									
-									ghosts[i].movement = reverseDirection(ghosts[i].movement);
+									ghosts[i].movement = reverse_dir(ghosts[i].movement);
 									
 								} else {
 									
@@ -469,7 +469,7 @@ void moveGhost(int i) {
 								}
 								
 								//move on nearest direction
-								nextLocation(&ghosts[i].locations[0], possible_directions[nearest_direction_index]);
+								next_loc(&ghosts[i].locs[0], possible_directions[nearest_direction_index]);
 								view_validation = 0;
 								
 							}
@@ -499,14 +499,14 @@ void moveGhost(int i) {
 			int j;
 			for (j = 0; j < 8; j++) {
 				
-				if (directions[j] & VERTICAL && directions[j] & HORIZONTAL) continue; //skip 2D directions
+				if (directions_all[j] & VERTICAL && directions_all[j] & HORIZONTAL) continue; //skip 2D directions
 				
-				Location next = ghosts[i].locations[0];
-				nextLocation(&next, directions[j]);
+				loc_t next = ghosts[i].locs[0];
+				next_loc(&next, directions_all[j]);
 				
 				if (isBrickThere(next)) { //possible
 					
-					first_possibilities[fpai++] = directions[j];
+					first_possibilities[fpai++] = directions_all[j];
 					
 				}
 				
@@ -515,35 +515,35 @@ void moveGhost(int i) {
 			//check second location moving possibilities
 			for (j = 0; j < 8; j++) {
 				
-				if (directions[j] & VERTICAL && directions[j] & HORIZONTAL) continue; //skip 2D directions
+				if (directions_all[j] & VERTICAL && directions_all[j] & HORIZONTAL) continue; //skip 2D directions
 				
-				Location next = ghosts[i].locations[1];
-				nextLocation(&next, directions[j]);
+				loc_t next = ghosts[i].locs[1];
+				next_loc(&next, directions_all[j]);
 				
 				if (!isBrickThere(next)) { //possible
 					
-					second_possibilities[spai++] = directions[j];
+					second_possibilities[spai++] = directions_all[j];
 					
 				}
 				
 			}
 			
 			//current moving direction possibility
-			int first_possibility = linearIntArraySearch(fpai, first_possibilities, ghosts[i].movement) != -1;
-			int second_possibility = linearIntArraySearch(spai, second_possibilities, ghosts[i].movement) != -1;
+			int first_possibility = linear_int_arr_search(fpai, first_possibilities, ghosts[i].movement) != -1;
+			int second_possibility = linear_int_arr_search(spai, second_possibilities, ghosts[i].movement) != -1;
 			
 			int should_change_first_direction = 0;
 			int should_change_second_direction = 0;
 			
 			if (first_possibility) {
 				
-				Location next = ghosts[i].locations[0];
-				nextLocation(&next, ghosts[i].movement);
+				loc_t next = ghosts[i].locs[0];
+				next_loc(&next, ghosts[i].movement);
 				
 				//check to stay neighbors
-				if (areNeighborPoints(next, ghosts[i].locations[1])) { //execute it
+				if (are_neighbour_locs(next, ghosts[i].locs[1])) { //execute it
 					
-					ghosts[i].locations[0] = next;
+					ghosts[i].locs[0] = next;
 					view_validation = 0;
 					
 				} else should_change_first_direction = 1;
@@ -552,13 +552,13 @@ void moveGhost(int i) {
 			
 			if (second_possibility) {
 				
-				Location next = ghosts[i].locations[1];
-				nextLocation(&next, ghosts[i].movement);
+				loc_t next = ghosts[i].locs[1];
+				next_loc(&next, ghosts[i].movement);
 				
 				//check to stay neighbors
-				if (areNeighborPoints(next, ghosts[i].locations[0])) { //execute it
+				if (are_neighbour_locs(next, ghosts[i].locs[0])) { //execute it
 					
-					ghosts[i].locations[1] = next;
+					ghosts[i].locs[1] = next;
 					view_validation = 0;
 					
 				} else should_change_second_direction = 1;
@@ -569,8 +569,8 @@ void moveGhost(int i) {
 				
 				//find common possible directions then remove the reverse of current direction
 				int commons[2];
-				int cai = findCommonElementsOfIntArrays(2, fpai, spai, commons, first_possibilities,
-				                                        second_possibilities); //commons append index
+				int cai = find_common_elements_of_int_arrs(2, fpai, spai, commons, first_possibilities,
+				                                           second_possibilities); //commons append index
 				
 				if (cai != 0) { //found some commons
 
@@ -588,8 +588,8 @@ void moveGhost(int i) {
 //                    printf("\n");
 					
 					//remove the reverse of current direction
-					if (shiftLeftIntArray(cai, commons,
-					                      linearIntArraySearch(cai, commons, reverseDirection(ghosts[i].movement))))
+					if (shift_left_int_arr(cai, commons,
+					                       linear_int_arr_search(cai, commons, reverse_dir(ghosts[i].movement))))
 						cai--;
 //                    else bugAlert("reverse of current direction not removed!\n");
 
@@ -609,35 +609,35 @@ void moveGhost(int i) {
 						ghosts[i].movement = commons[0];
 						
 						//if ghosts are not side by side reach that else normal move
-						if (!areSideBySideLocations(ghosts[i].locations[1], ghosts[i].locations[0],
-						                            0)) { //are not side by side
+						if (!are_size_by_size_locs(ghosts[i].locs[1], ghosts[i].locs[0],
+						                           0)) { //are not side by side
 
 //                            bugAlert("are not sbs\n");
 							
-							Location next = ghosts[i].locations[0];
-							nextLocation(&next, ghosts[i].movement);
+							loc_t next = ghosts[i].locs[0];
+							next_loc(&next, ghosts[i].movement);
 							
 							//check if now side by side
-							if (!areSideBySideLocations(ghosts[i].locations[1], next, 0)) { //are not side by side
+							if (!are_size_by_size_locs(ghosts[i].locs[1], next, 0)) { //are not side by side
 								
-								next = ghosts[i].locations[1];
-								nextLocation(&next, ghosts[i].movement);
+								next = ghosts[i].locs[1];
+								next_loc(&next, ghosts[i].movement);
 								
 								//check if now side by side
-								if (!areSideBySideLocations(next, ghosts[i].locations[0], 0)) { //stuck
+								if (!are_size_by_size_locs(next, ghosts[i].locs[0], 0)) { //stuck
 									
 									///wtf
 									
 								} else { //execute
 									
-									ghosts[i].locations[1] = next;
+									ghosts[i].locs[1] = next;
 									view_validation = 0;
 									
 								}
 								
 							} else { //are side by side; execute the move
 								
-								ghosts[i].locations[0] = next;
+								ghosts[i].locs[0] = next;
 								view_validation = 0;
 								
 							}
@@ -653,12 +653,12 @@ void moveGhost(int i) {
 						//find a direction based on being side by side but not reverse of current direction
 						for (j = 0; j < 8; j++) {
 							
-							if ((directions[j] & VERTICAL && directions[j] & HORIZONTAL) ||
-							    directions[j] == reverseDirection(ghosts[i].movement))
+							if ((directions_all[j] & VERTICAL && directions_all[j] & HORIZONTAL) ||
+							    directions_all[j] == reverse_dir(ghosts[i].movement))
 								continue; //skip 2D directions and reverse direction of current direction
 							
-							Location next = ghosts[i].locations[0];
-							nextLocation(&next, directions[j]);
+							loc_t next = ghosts[i].locs[0];
+							next_loc(&next, directions_all[j]);
 							
 							if (isBrickThere(next)) { //check to be side by side
 
@@ -666,7 +666,7 @@ void moveGhost(int i) {
 //                                printDirection(sbs);
 //                                printf("\n");
 								
-								if (!areSideBySideLocations(ghosts[i].locations[1], next, 0))
+								if (!are_size_by_size_locs(ghosts[i].locs[1], next, 0))
 									continue; //not side by side
 								else { //found it; execute the move
 
@@ -675,7 +675,7 @@ void moveGhost(int i) {
 //                                    printf("\n");
 //                                    Sleep(1000);
 									
-									ghosts[i].movement = directions[j];
+									ghosts[i].movement = directions_all[j];
 									
 									moveGhost(i);
 									
@@ -696,12 +696,12 @@ void moveGhost(int i) {
 					//find a direction based on being side by side but not reverse of current direction
 					for (j = 0; j < 8; j++) {
 						
-						if ((directions[j] & VERTICAL && directions[j] & HORIZONTAL) ||
-						    directions[j] == reverseDirection(ghosts[i].movement))
+						if ((directions_all[j] & VERTICAL && directions_all[j] & HORIZONTAL) ||
+						    directions_all[j] == reverse_dir(ghosts[i].movement))
 							continue; //skip 2D directions and reverse direction of current direction
 						
-						Location next = ghosts[i].locations[0];
-						nextLocation(&next, directions[j]);
+						loc_t next = ghosts[i].locs[0];
+						next_loc(&next, directions_all[j]);
 						
 						if (isBrickThere(next)) {
 
@@ -709,7 +709,7 @@ void moveGhost(int i) {
 //                            printDirection(sbs);
 //                            printf("\n");
 							
-							if (!areSideBySideLocations(ghosts[i].locations[1], next, 0)) continue; //not side by side
+							if (!are_size_by_size_locs(ghosts[i].locs[1], next, 0)) continue; //not side by side
 							else { //found it; execute the move
 
 //                                printf("found it : ");
@@ -717,7 +717,7 @@ void moveGhost(int i) {
 //                                printf("\n");
 //                                Sleep(1000);
 								
-								ghosts[i].movement = directions[j];
+								ghosts[i].movement = directions_all[j];
 								
 								moveGhost(i);
 								
@@ -794,7 +794,7 @@ void updateZones() {
 	int current_color_use_time = 0;
 	
 	//replace pac man trace with bricks
-	Replace2DintArray(ROWS, COLUMNS, bricks, -2, -1);
+	replace_2d_int_arr(ROWS, COLUMNS, bricks, -2, -1);
 	
 	int i;
 	for (i = 0; i < ROWS; i++) {
@@ -825,7 +825,7 @@ void updateZones() {
 			if (bricks[i][j] != -1) {
 				
 				//check neighbors
-				Location l;
+				loc_t l;
 				
 				int k;
 				for (k = 0; k < 8; k++) {
@@ -834,7 +834,7 @@ void updateZones() {
 					l.x = i;
 					l.y = j;
 					
-					nextLocation(&l, directions[k]);
+					next_loc(&l, directions_all[k]);
 					
 					if (bricks[l.x][l.y] == -1) continue;
 					else { //a zone number
@@ -866,16 +866,16 @@ void updateZones() {
 
 void tryCaptureZones() {
 	
-	int ghosts_zones[float_ghosts * FLOAT_GHOST_LOCATIONS_SIZE + rail_ghosts * RAIL_GHOST_LOCATIONS_SIZE +
-	                 brick_zone_ghosts * BRICK_ZONE_GHOST_LOCATIONS_SIZE];
+	int ghosts_zones[float_ghosts * FLOAT_GHOST_LOCS_SIZE + rail_ghosts * RAIL_GHOST_LOCS_SIZE +
+	                 brick_zone_ghosts * BRICK_ZONE_GHOST_LOCS_SIZE];
 	
 	int i;
 	for (i = 0; i < ghosts_quantity; i++) {
 		
 		int j;
-		for (j = 0; j < ghosts[i].locations_size; j++) {
+		for (j = 0; j < ghosts[i].locs_size; j++) {
 			
-			ghosts_zones[i] = bricks[ghosts[i].locations[j].x][ghosts[i].locations[j].y];
+			ghosts_zones[i] = bricks[ghosts[i].locs[j].x][ghosts[i].locs[j].y];
 			
 		}
 		
@@ -887,9 +887,9 @@ void tryCaptureZones() {
 		for (j = 0; j < COLUMNS; j++) {
 			
 			if (bricks[i][j] == -1) continue;
-			else if (linearIntArraySearch(ghosts_quantity, ghosts_zones, bricks[i][j]) == -1) {
+			else if (linear_int_arr_search(ghosts_quantity, ghosts_zones, bricks[i][j]) == -1) {
 				
-				Replace2DintArray(ROWS, COLUMNS, bricks, bricks[i][j], -1);
+				replace_2d_int_arr(ROWS, COLUMNS, bricks, bricks[i][j], -1);
 				
 			}
 			
@@ -928,13 +928,13 @@ int movePacMan(int direction, int auto_call) {
 	
 	if (!auto_call && pm.movement != -1) {
 		
-		if (reverseDirection(pm.movement) != direction) pm.movement = direction;
+		if (reverse_dir(pm.movement) != direction) pm.movement = direction;
 		
 		return 0;
 		
 	}
 	
-	nextLocation(&pm.location, direction);
+	next_loc(&pm.location, direction);
 	
 	if (bricks[pm.location.x][pm.location.y] != -1) { //stepped out of the safe zone, run!
 		
@@ -973,13 +973,13 @@ int arrowToDirection(int a) {
 	
 	switch (a) {
 		
-		case UAKCC :
+		case UP_AKC :
 			return VERTICAL | UP;
-		case DAKCC :
+		case DOWN_AKC :
 			return VERTICAL | !UP;
-		case LAKCC :
+		case LEFT_AKC :
 			return HORIZONTAL | LEFT;
-		case RAKCC :
+		case RIGHT_AKC :
 			return HORIZONTAL | !LEFT;
 		
 	}
@@ -998,7 +998,7 @@ int main() {
 	nodelay(stdscr, TRUE);
 	
 	srand(time(NULL)); //for absolute random
-	cls();
+	clear_screen();
 	
 	init();
 	
@@ -1012,10 +1012,10 @@ int main() {
 			
 			switch (c) { //key press handler
 				
-				case LAKCC:
-				case RAKCC:
-				case UAKCC:
-				case DAKCC : { //arrow key
+				case LEFT_AKC:
+				case RIGHT_AKC:
+				case UP_AKC:
+				case DOWN_AKC : { //arrow key
 					
 					movePacMan(arrowToDirection(c), 0);
 					
@@ -1026,10 +1026,10 @@ int main() {
 			
 		}
 		
-		purgePressedKeys();
+		purge_keys();
 		controlAutoMoves();
 		drawGame();
-		Sleep(1000 / REFRESH_RATE);
+		sleep_ms(1000 / REFRESH_RATE);
 	}
 	
 	endwin();

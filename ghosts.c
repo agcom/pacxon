@@ -14,17 +14,17 @@ enum {
 #define BRICK_ZONE_GHOST_CHAR "δ"
 
 // Locations needed sizes
-#define FLOAT_GHOST_LOCATIONS_SIZE 1
-#define BRICK_ZONE_GHOST_LOCATIONS_SIZE 1
-#define RAIL_GHOST_LOCATIONS_SIZE 2
+#define FLOAT_GHOST_LOCS_SIZE 1
+#define BRICK_ZONE_GHOST_LOCS_SIZE 1
+#define RAIL_GHOST_LOCS_SIZE 2
 
-#define MAX_GHOST_LOCATIONS_SIZE 2
+#define MAX_GHOST_LOCS_SIZE 2
 
 typedef struct {
 	int type;
-	int locations_size;
-	Location locations[MAX_GHOST_LOCATIONS_SIZE];
+	int locs_size;
+	loc_t locs[MAX_GHOST_LOCS_SIZE];
 	int movement;
-} Ghost;
+} ghost_t;
 
 #endif // GHOSTS_C_INCLUDED

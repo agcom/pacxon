@@ -123,8 +123,6 @@ void addGhost(int type, int index) {
 					
 					possiblitites[possiblitites_append++] = directions[i];
 					
-					printf("%d", possiblitites_append);
-					
 				}
 				
 			}

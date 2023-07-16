@@ -10,6 +10,6 @@ typedef struct {
 	loc_t location;
 	int movement;
 	int lives;
-} PacMan;
+} pac_man;
 
 #endif // PACMAN_C_INCLUDED

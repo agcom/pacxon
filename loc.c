@@ -1,0 +1,4 @@
+#ifndef LOC_C_INCLUDED
+#define LOC_C_INCLUDED
+
+#endif // LOC_C_INCLUDED

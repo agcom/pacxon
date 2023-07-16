@@ -4,9 +4,9 @@
 #include "utils.c"
 
 // Ghosts type coding
-enum {
+typedef enum {
 	FLOAT_GHOST, RAIL_GHOST, BRICK_ZONE_GHOST
-};
+} ghost_type_t;
 
 // Shapes
 #define FLOAT_GHOST_CHAR "α"
@@ -21,7 +21,7 @@ enum {
 #define MAX_GHOST_LOCS_SIZE 2
 
 typedef struct {
-	int type;
+	ghost_type_t type;
 	int locs_size;
 	loc_t locs[MAX_GHOST_LOCS_SIZE];
 	int movement;

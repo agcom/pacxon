@@ -5,12 +5,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "kbhit.c"
-
-// Directions' masks
-#define VERTICAL 0b0001
-#define HORIZONTAL 0b0010
-#define LEFT 0b0100
-#define UP 0b1000
+#include "dir.c"
 
 // AKC = Arrow Key Code
 #define LEFT_AKC KEY_LEFT
@@ -24,18 +19,6 @@
 typedef struct {
 	int x, y;
 } loc_t;
-
-// Clock-wise order
-const int directions_all[8] = {
-		VERTICAL | UP, // UP
-		HORIZONTAL | VERTICAL | UP | !LEFT, // Up Right
-		HORIZONTAL | !LEFT, // Right
-		HORIZONTAL | VERTICAL | !UP | !LEFT, // Down Rigth
-		VERTICAL | !UP, // Down
-		HORIZONTAL | VERTICAL | !UP | LEFT, // Down Left
-		HORIZONTAL | LEFT, // Left
-		HORIZONTAL | VERTICAL | UP | LEFT  // Up Left
-};
 
 bool rand_bool() {
 	return rand() % 2;
@@ -170,7 +153,7 @@ bool are_neighbour_locs(const loc_t p1, const loc_t p2) {
 	int i;
 	for (i = 0; i < 8; i++) {
 		loc_t t = p2;
-		next_loc(&t, directions_all[i]);
+		next_loc(&t, all_directions[i]);
 		if (are_equal_locs(p1, t)) return true;
 	}
 	
@@ -299,13 +282,13 @@ int turn_dir(int dir, const int clockwise, const int steps) {
 	
 	// Find its index at directions
 	int index;
-	if ((index = linear_int_arr_search(8, directions_all, dir)) == -1)
+	if ((index = linear_int_arr_search(8, all_directions, dir)) == -1)
 		return SHOULD_NOT_REACH_HERE; // Not a direction
 	
 	int i;
 	for (i = 0; i < steps; i++) {
-		if (clockwise) dir = directions_all[index == 7 ? 0 : index + 1];
-		else dir = directions_all[index == 0 ? 7 : index - 1];
+		if (clockwise) dir = all_directions[index == 7 ? 0 : index + 1];
+		else dir = all_directions[index == 0 ? 7 : index - 1];
 		
 	}
 	

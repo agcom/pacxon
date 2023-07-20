@@ -2,7 +2,7 @@
 
 # PacXon
 
-A partial PacXon game clone in C, on CLI (you can play the original version [here](https://www.pacxon.net/)).
+A partial PacXon game clone in C, on terminal (you can play the original version [here](https://www.pacxon.net/)).
 
 This game was my final project for the **computer fundamentals and programming** university course, originally made in **early 2019**.
 
